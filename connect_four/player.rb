@@ -1,6 +1,9 @@
-class PLayer
+class Player
 
-	RED = "\u{1F534}"
-	BLACK = "\u{2b24}"
+	attr_reader :color
+
+	def initialize(color)
+		@color = color
+	end
 
 end

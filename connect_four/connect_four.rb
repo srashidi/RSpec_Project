@@ -1,2 +1,2 @@
-#require 'player'
-#require 'cage'
+require './player'
+require './cage'

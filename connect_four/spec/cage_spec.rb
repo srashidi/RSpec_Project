@@ -7,7 +7,7 @@ describe Cage do
 	end
 
 	describe "#new" do
-		it "creates a new cage with no pieces" do
+		it "creates a new Cage object with no pieces" do
 			expect(@cage.row1).to eql "|    |    |    |    |    |    |    |"
 			expect(@cage.row2).to eql "|    |    |    |    |    |    |    |"
 			expect(@cage.row3).to eql "|    |    |    |    |    |    |    |"
