@@ -20,6 +20,12 @@ describe Player do
 			expect(@player.color).to eql :red
 		end
 
+		context "when set equal to a new color" do
+			it "raises NoMethodError" do
+				expect { @player.color = :black }.to raise_error(NoMethodError)
+			end
+		end
+
 	end
 
 end
