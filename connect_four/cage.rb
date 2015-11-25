@@ -1,10 +1,10 @@
 class Cage
 
+	# Constants for colored pieces
 	RED = "\u{1F534}"
 	BLACK = "\u{2b24}"
 
-	attr_reader :row1, :row2, :row3, :row4, :row5, :row6
-
+	# Indeces in the row strings for each column
 	COL1 = 2
 	COL2 = 7
 	COL3 = 12
@@ -13,6 +13,7 @@ class Cage
 	COL6 = 27
 	COL7 = 32
 
+	# Creates an empty game cage
 	def initialize
 		@row1 = "|    |    |    |    |    |    |    |"
 		@row2 = "|    |    |    |    |    |    |    |"
@@ -22,6 +23,7 @@ class Cage
 		@row6 = "|    |    |    |    |    |    |    |"
 	end
 
+	# Displays current game cage
 	def display
 		puts @row1
 		puts @row2
@@ -31,7 +33,10 @@ class Cage
 		puts @row6
 	end
 
+	# Places a piece of a selected color in a given column
 	def place_piece(player_color,column_choice)
+
+		# Specifies the index of the column
 		column = case column_choice
 		when 1
 			COL1
@@ -49,28 +54,32 @@ class Cage
 			COL7
 		end
 
-		color = case player_color
+		# Specifies the color of the piece
+		piece = case player_color
 		when :red
 			RED
 		when :black
 			BLACK
 		end
 
+		# Puts the piece in the lowest row with no piece
+		# in the given column
 		if /\s/ =~ @row6[column]
-			@row6[column] = color
+			@row6[column] = piece
 		elsif /\s/ =~ @row5[column]
-			@row5[column] = color
+			@row5[column] = piece
 		elsif /\s/ =~ @row4[column]
-			@row4[column] = color
+			@row4[column] = piece
 		elsif /\s/ =~ @row3[column]
-			@row3[column] = color
+			@row3[column] = piece
 		elsif /\s/ =~ @row2[column]
-			@row2[column] = color
+			@row2[column] = piece
 		elsif /\s/ =~ @row1[column]
-			@row1[column] = color
+			@row1[column] = piece
 		else
 			puts "Error: Column is full. Try again..."
 		end
+
 	end
 
 end
