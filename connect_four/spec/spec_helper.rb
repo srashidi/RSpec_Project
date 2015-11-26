@@ -54,7 +54,9 @@ class ConnectFour
 
 	def turn(player, input)
 		puts ""
-		puts "Choose a column (from the numbers 1-7):"
+		puts "Choose a column (from the numbers 1-7),"
+		puts "or \"display\" the current cage, or ask"
+		puts "for \"help\", or \"exit\":"
 		if /[^1-7]/ =~ input
 			input = input.strip.downcase
 			if input == "display"
@@ -69,8 +71,9 @@ class ConnectFour
 			turn(player, :new_input) unless @test_mode
 		else
 			column = input.strip.to_i
-			@cage.place_piece(player.color,column)
+			move = @cage.place_piece(player.color,column)
 			@cage.display
+			turn(player, :new_input) if move == :FullColumnError unless @test_mode
 			turn(@player2, :new_input) if player == @player1 unless @test_mode
 			turn(@player1, :new_input) if player == @player2 unless @test_mode
 		end

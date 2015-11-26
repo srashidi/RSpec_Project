@@ -49,24 +49,29 @@ class ConnectFour
 	# A player's turn
 	def turn(player)
 		puts ""
-		puts "Choose a column (from the numbers 1-7):"
+		puts "Choose a column (from the numbers 1-7),"
+		puts "or \"display\" the current cage, or ask"
+		puts "for \"help\", or \"exit\":"
 		input = gets.chomp.strip
 		if /[^1-7]/ =~ input
 			input = input.downcase
 			if input == "display"
 				@cage.display
+				turn(player)
 			elsif input == "help"
 				help
+				turn(player)
 			elsif input == "exit"
 				puts "Goodbye!"
 			else
 				puts "Error: Invalid input. Try again..."
+				turn(player)
 			end
-			turn(player)
 		else
 			column = input.to_i
-			@cage.place_piece(player.color,column)
+			move = @cage.place_piece(player.color,column)
 			@cage.display
+			turn(player) if move == :FullColumnError
 			turn(@player2) if player == @player1
 			turn(@player1) if player == @player2
 		end
