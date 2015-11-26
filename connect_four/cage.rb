@@ -78,6 +78,7 @@ class Cage
 			@row1[column] = piece
 		else
 			puts "Error: Column is full. Try again..."
+			:FullColumnError
 		end
 
 	end
