@@ -53,8 +53,14 @@ class ConnectFour
 	end
 
 	def turn(player, input)
+		player_string = case player
+		when @player1
+			"Player 1"
+		when @player2
+			"Player 2"
+		end
 		puts ""
-		puts "Choose a column (from the numbers 1-7),"
+		puts "#{player_string} (#{player.color.to_s}), choose a column (from the numbers 1-7),"
 		puts "or \"display\" the current cage, or ask"
 		puts "for \"help\", or \"exit\":"
 		if /[^1-7]/ =~ input
@@ -73,9 +79,33 @@ class ConnectFour
 			column = input.strip.to_i
 			move = @cage.place_piece(player.color,column)
 			@cage.display
+			unless move == :FullColumnError
+				player.pieces << move
+				if win?(player,move)
+					puts ""
+					puts "Four in a row! #{player_string} wins!"
+				end
+			end
 			turn(player, :new_input) if move == :FullColumnError unless @test_mode
 			turn(@player2, :new_input) if player == @player1 unless @test_mode
 			turn(@player1, :new_input) if player == @player2 unless @test_mode
+		end
+	end
+
+	def play_again(input)
+		puts ""
+		puts "Play again?"
+		input = input.strip.downcase
+		case input
+		when "yes"
+			puts ""
+			ConnectFour.new(:test_mode)
+		when "no"
+			puts ""
+			puts "Goodbye!"
+		else
+			puts "Error: Invalid input. Try again..."
+			play_again(input) unless @test_mode
 		end
 	end
 

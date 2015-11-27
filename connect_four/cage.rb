@@ -25,12 +25,15 @@ class Cage
 
 	# Displays current game cage
 	def display
+		puts ""
+		puts "  1    2    3    4    5    6    7"
 		puts @row1
 		puts @row2
 		puts @row3
 		puts @row4
 		puts @row5
 		puts @row6
+		puts ""
 	end
 
 	# Places a piece of a selected color in a given column
@@ -66,20 +69,28 @@ class Cage
 		# in the given column
 		if /\s/ =~ @row6[column]
 			@row6[column] = piece
+			row = 6
 		elsif /\s/ =~ @row5[column]
 			@row5[column] = piece
+			row = 5
 		elsif /\s/ =~ @row4[column]
 			@row4[column] = piece
+			row = 4
 		elsif /\s/ =~ @row3[column]
 			@row3[column] = piece
+			row = 3
 		elsif /\s/ =~ @row2[column]
 			@row2[column] = piece
+			row = 2
 		elsif /\s/ =~ @row1[column]
 			@row1[column] = piece
+			row = 1
 		else
 			puts "Error: Column is full. Try again..."
-			:FullColumnError
+			return :FullColumnError
 		end
+
+		[column_choice,row]
 
 	end
 

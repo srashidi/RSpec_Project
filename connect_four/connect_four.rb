@@ -48,8 +48,14 @@ class ConnectFour
 
 	# A player's turn
 	def turn(player)
+		player_string = case player
+		when @player1
+			"Player 1"
+		when @player2
+			"Player 2"
+		end
 		puts ""
-		puts "Choose a column (from the numbers 1-7),"
+		puts "#{player_string} (#{player.color.to_s}), choose a column (from the numbers 1-7),"
 		puts "or \"display\" the current cage, or ask"
 		puts "for \"help\", or \"exit\":"
 		input = gets.chomp.strip
@@ -71,10 +77,66 @@ class ConnectFour
 			column = input.to_i
 			move = @cage.place_piece(player.color,column)
 			@cage.display
+			unless move == :FullColumnError
+				player.pieces << move
+				if win?(player,move)
+					puts ""
+					puts "Four in a row! #{player_string} wins!"
+					return play_again
+				end
+			end
 			turn(player) if move == :FullColumnError
 			turn(@player2) if player == @player1
 			turn(@player1) if player == @player2
 		end
+	end
+
+	# Prompts user to play again
+	def play_again
+		puts ""
+		puts "Play again?"
+		input = gets.chomp.strip.downcase
+		case input
+		when "yes"
+			puts ""
+			ConnectFour.new
+		when "no"
+			puts ""
+			puts "Goodbye!"
+		else
+			puts "Error: Invalid input. Try again..."
+			play_again(input)
+		end
+	end
+
+
+	# Based on a given piece, returns an array of all
+	# possible winning combinations relative to that piece
+	def win_possibilities(piece)
+		[ [ [piece[0],piece[1]],[piece[0]+1,piece[1]],[piece[0]+2,piece[1]],[piece[0]+3,piece[1]] ],
+		[ [piece[0]-1,piece[1]],[piece[0],piece[1]],[piece[0]+1,piece[1]],[piece[0]+2,piece[1]] ],
+		[ [piece[0]-2,piece[1]],[piece[0]-1,piece[1]],[piece[0],piece[1]],[piece[0]+1,piece[1]] ],
+		[ [piece[0]-3,piece[1]],[piece[0]-2,piece[1]],[piece[0]-1,piece[1]],[piece[0],piece[1]] ],
+		[ [piece[0],piece[1]],[piece[0],piece[1]+1],[piece[0],piece[1]+2],[piece[0],piece[1]+3] ],
+		[ [piece[0],piece[1]-1],[piece[0],piece[1]],[piece[0],piece[1]+1],[piece[0],piece[1]+2] ],
+		[ [piece[0],piece[1]-2],[piece[0],piece[1]-1],[piece[0],piece[1]],[piece[0],piece[1]+1] ],
+		[ [piece[0],piece[1]-3],[piece[0],piece[1]-2],[piece[0],piece[1]-1],[piece[0],piece[1]] ],
+		[ [piece[0],piece[1]],[piece[0]+1,piece[1]+1],[piece[0]+2,piece[1]+2],[piece[0]+3,piece[1]+3] ],
+		[ [piece[0]-1,piece[1]-1],[piece[0],piece[1]],[piece[0]+1,piece[1]+1],[piece[0]+2,piece[1]+2] ],
+		[ [piece[0]-2,piece[1]-2],[piece[0]-1,piece[1]-1],[piece[0],piece[1]],[piece[0]+1,piece[1]+1] ],
+		[ [piece[0]-3,piece[1]-3],[piece[0]-2,piece[1]-2],[piece[0]-1,piece[1]-1],[piece[0],piece[1]] ],
+		[ [piece[0],piece[1]],[piece[0]+1,piece[1]-1],[piece[0]+2,piece[1]-2],[piece[0]+3,piece[1]-3] ],
+		[ [piece[0]-1,piece[1]+1],[piece[0],piece[1]],[piece[0]+1,piece[1]-1],[piece[0]+2,piece[1]-2] ],
+		[ [piece[0]-2,piece[1]+2],[piece[0]-1,piece[1]+1],[piece[0],piece[1]],[piece[0]+1,piece[1]-1] ],
+		[ [piece[0]-3,piece[1]+3],[piece[0]-2,piece[1]+2],[piece[0]-1,piece[1]+1],[piece[0],piece[1]] ] ]
+	end
+
+	# Checks to see if a move made is a winning move
+	def win?(player,piece)
+		win_possibilities(piece).each do |possibility|
+			return true if possibility - player.pieces == []
+		end
+		false
 	end
 
 	# Displays helpful gameplay information

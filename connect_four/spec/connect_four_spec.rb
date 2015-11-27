@@ -166,15 +166,18 @@ describe ConnectFour do
 			expect(STDOUT).to receive(:puts).with("Player 1, do you choose \"red\" or \"black\"?")
 			@game.color_selection("red")
 			expect(STDOUT).to receive(:puts).with("")
-			expect(STDOUT).to receive(:puts).with("Choose a column (from the numbers 1-7),")
+			expect(STDOUT).to receive(:puts).with("Player 1 (red), choose a column (from the numbers 1-7),")
 			expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
 			expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+			expect(STDOUT).to receive(:puts).with("")
+			expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
 			expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 			expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 			expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 			expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 			expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 			expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
+			expect(STDOUT).to receive(:puts).with("")
 			@game.turn(@game.player1,"3")
 		end
 
@@ -190,47 +193,61 @@ describe ConnectFour do
 					expect(@game.cage.row5).to eql "|    |    |    |    |    |    |    |"
 					expect(@game.cage.row6).to eql "|    |    | #{RED}  |    |    |    |    |"
 				end
+
+				it "pushes the coordinate to the player's pieces array" do
+					expect(@game.player1.pieces).to eql [ [3,6] ]
+					expect(@game.player2.pieces).to eql []
+				end
 			end
 
 			context "when it is a later move (sometime after the first move)" do
 
 				before :each do
 					expect(STDOUT).to receive(:puts).with("")
-					expect(STDOUT).to receive(:puts).with("Choose a column (from the numbers 1-7),")
+					expect(STDOUT).to receive(:puts).with("Player 2 (black), choose a column (from the numbers 1-7),")
 					expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
 					expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+					expect(STDOUT).to receive(:puts).with("")
+					expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    | #{BLACK}  |    |    |")
+					expect(STDOUT).to receive(:puts).with("")
 					@game.turn(@game.player2,"5")
 					expect(STDOUT).to receive(:puts).with("")
-					expect(STDOUT).to receive(:puts).with("Choose a column (from the numbers 1-7),")
+					expect(STDOUT).to receive(:puts).with("Player 1 (red), choose a column (from the numbers 1-7),")
 					expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
 					expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+					expect(STDOUT).to receive(:puts).with("")
+					expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    | #{BLACK}  |    |    |")
+					expect(STDOUT).to receive(:puts).with("")
 					@game.turn(@game.player1,"3")
 				end
 
 				it "runs #place_piece for the Cage object with the correct color
 	in the correct column and displays the game board" do
 					expect(STDOUT).to receive(:puts).with("")
-					expect(STDOUT).to receive(:puts).with("Choose a column (from the numbers 1-7),")
+					expect(STDOUT).to receive(:puts).with("Player 2 (black), choose a column (from the numbers 1-7),")
 					expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
 					expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+					expect(STDOUT).to receive(:puts).with("")
+					expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    | #{BLACK}  |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    | #{BLACK}  |    |    |")
+					expect(STDOUT).to receive(:puts).with("")
 					@game.turn(@game.player2,"3")
 					expect(@game.cage.row1).to eql "|    |    |    |    |    |    |    |"
 					expect(@game.cage.row2).to eql "|    |    |    |    |    |    |    |"
@@ -240,57 +257,90 @@ describe ConnectFour do
 					expect(@game.cage.row6).to eql "|    |    | #{RED}  |    | #{BLACK}  |    |    |"
 				end
 
+				it "pushes the coordinates to the player's pieces array" do
+					expect(STDOUT).to receive(:puts).with("")
+					expect(STDOUT).to receive(:puts).with("Player 2 (black), choose a column (from the numbers 1-7),")
+					expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
+					expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+					expect(STDOUT).to receive(:puts).with("")
+					expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
+					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+					expect(STDOUT).to receive(:puts).with("|    |    | #{BLACK}  |    |    |    |    |")
+					expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
+					expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    | #{BLACK}  |    |    |")
+					expect(STDOUT).to receive(:puts).with("")
+					@game.turn(@game.player2,"3")
+					expect(@game.player1.pieces).to eql [ [3,6],[3,5] ]
+					expect(@game.player2.pieces).to eql [ [5,6],[3,4] ]
+				end
+
 				context "when column that is full is chosen" do
 
 					before do
 						expect(STDOUT).to receive(:puts).with("")
-						expect(STDOUT).to receive(:puts).with("Choose a column (from the numbers 1-7),")
+						expect(STDOUT).to receive(:puts).with("Player 2 (black), choose a column (from the numbers 1-7),")
 						expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
 						expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+						expect(STDOUT).to receive(:puts).with("")
+						expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
 						expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{BLACK}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    | #{BLACK}  |    |    |")
+						expect(STDOUT).to receive(:puts).with("")
 						@game.turn(@game.player2,"3")
 						expect(STDOUT).to receive(:puts).with("")
-						expect(STDOUT).to receive(:puts).with("Choose a column (from the numbers 1-7),")
+						expect(STDOUT).to receive(:puts).with("Player 1 (red), choose a column (from the numbers 1-7),")
 						expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
 						expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+						expect(STDOUT).to receive(:puts).with("")
+						expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
 						expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{BLACK}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    | #{BLACK}  |    |    |")
+						expect(STDOUT).to receive(:puts).with("")
 						@game.turn(@game.player1,"3")
 						expect(STDOUT).to receive(:puts).with("")
-						expect(STDOUT).to receive(:puts).with("Choose a column (from the numbers 1-7),")
+						expect(STDOUT).to receive(:puts).with("Player 2 (black), choose a column (from the numbers 1-7),")
 						expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
 						expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+						expect(STDOUT).to receive(:puts).with("")
+						expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
 						expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{BLACK}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{BLACK}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    | #{BLACK}  |    |    |")
+						expect(STDOUT).to receive(:puts).with("")
 						@game.turn(@game.player2,"3")
 						expect(STDOUT).to receive(:puts).with("")
-						expect(STDOUT).to receive(:puts).with("Choose a column (from the numbers 1-7),")
+						expect(STDOUT).to receive(:puts).with("Player 1 (red), choose a column (from the numbers 1-7),")
 						expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
 						expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+						expect(STDOUT).to receive(:puts).with("")
+						expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{BLACK}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{BLACK}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    | #{BLACK}  |    |    |")
+						expect(STDOUT).to receive(:puts).with("")
 						@game.turn(@game.player1,"3")
 					end
 
 					it "gives an error message" do
 						expect(STDOUT).to receive(:puts).with("Error: Column is full. Try again...")
+						expect(STDOUT).to receive(:puts).with("")
+						expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{BLACK}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
@@ -298,7 +348,8 @@ describe ConnectFour do
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
 						expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    | #{BLACK}  |    |    |")
 						expect(STDOUT).to receive(:puts).with("")
-						expect(STDOUT).to receive(:puts).with("Choose a column (from the numbers 1-7),")
+						expect(STDOUT).to receive(:puts).with("")
+						expect(STDOUT).to receive(:puts).with("Player 2 (black), choose a column (from the numbers 1-7),")
 						expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
 						expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
 						@game.turn(@game.player2,"3")
@@ -315,15 +366,18 @@ describe ConnectFour do
 			context "when user types 'display'" do
 				it "displays the current Cage object" do
 					expect(STDOUT).to receive(:puts).with("")
-					expect(STDOUT).to receive(:puts).with("Choose a column (from the numbers 1-7),")
+					expect(STDOUT).to receive(:puts).with("Player 1 (red), choose a column (from the numbers 1-7),")
 					expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
 					expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+					expect(STDOUT).to receive(:puts).with("")
+					expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
 					expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
+					expect(STDOUT).to receive(:puts).with("")
 					@game.turn(@game.player1,"display")
 				end
 			end
@@ -331,7 +385,7 @@ describe ConnectFour do
 			context "when user types 'help'" do
 				it "displays helpful gameplay information" do
 					expect(STDOUT).to receive(:puts).with("")
-					expect(STDOUT).to receive(:puts).with("Choose a column (from the numbers 1-7),")
+					expect(STDOUT).to receive(:puts).with("Player 1 (red), choose a column (from the numbers 1-7),")
 					expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
 					expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
 					expect(STDOUT).to receive(:puts).with("Choose a column from the cage")
@@ -353,7 +407,7 @@ describe ConnectFour do
 			context "when user types 'exit'" do
 				it "gives a message and exits the game" do
 					expect(STDOUT).to receive(:puts).with("")
-					expect(STDOUT).to receive(:puts).with("Choose a column (from the numbers 1-7),")
+					expect(STDOUT).to receive(:puts).with("Player 1 (red), choose a column (from the numbers 1-7),")
 					expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
 					expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
 					expect(STDOUT).to receive(:puts).with("Goodbye!")
@@ -364,7 +418,7 @@ describe ConnectFour do
 			context "when neither help, display, nor exit are called" do
 				it "gives an error message and doesn't place a piece in the cage" do
 					expect(STDOUT).to receive(:puts).with("")
-					expect(STDOUT).to receive(:puts).with("Choose a column (from the numbers 1-7),")
+					expect(STDOUT).to receive(:puts).with("Player 1 (red), choose a column (from the numbers 1-7),")
 					expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
 					expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
 					expect(STDOUT).to receive(:puts).with("Error: Invalid input. Try again...")
@@ -372,6 +426,214 @@ describe ConnectFour do
 				end
 			end
 
+		end
+
+	end
+
+	describe "#win_possibilities" do
+
+		context "when a coordinate is input" do
+
+			before do
+				@win_possibilities = @game.win_possibilities([3,4])
+			end
+
+			it "returns an array with all possible winning combinations
+	relative to the given piece" do
+				expect(@win_possibilities).to eql [ [ [3,4],[3+1,4],[3+2,4],[3+3,4] ],
+																					[ [3-1,4],[3,4],[3+1,4],[3+2,4] ],
+																					[ [3-2,4],[3-1,4],[3,4],[3+1,4] ],
+																					[ [3-3,4],[3-2,4],[3-1,4],[3,4] ],
+																					[ [3,4],[3,4+1],[3,4+2],[3,4+3] ],
+																					[ [3,4-1],[3,4],[3,4+1],[3,4+2] ],
+																					[ [3,4-2],[3,4-1],[3,4],[3,4+1] ],
+																					[ [3,4-3],[3,4-2],[3,4-1],[3,4] ],
+																					[ [3,4],[3+1,4+1],[3+2,4+2],[3+3,4+3] ],
+																					[ [3-1,4-1],[3,4],[3+1,4+1],[3+2,4+2] ],
+																					[ [3-2,4-2],[3-1,4-1],[3,4],[3+1,4+1] ],
+																					[ [3-3,4-3],[3-2,4-2],[3-1,4-1],[3,4] ],
+																					[ [3,4],[3+1,4-1],[3+2,4-2],[3+3,4-3] ],
+																					[ [3-1,4+1],[3,4],[3+1,4-1],[3+2,4-2] ],
+																					[ [3-2,4+2],[3-1,4+1],[3,4],[3+1,4-1] ],
+																					[ [3-3,4+3],[3-2,4+2],[3-1,4+1],[3,4] ] ]
+			end
+		end
+
+	end
+
+	describe "#win?" do
+
+		context "when player makes a winning move" do
+
+			before do
+				expect(STDOUT).to receive(:puts).with("Player 1, do you choose \"red\" or \"black\"?")
+				@game.color_selection("red")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("Player 1 (red), choose a column (from the numbers 1-7),")
+				expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
+				expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("")
+				@game.turn(@game.player1,"3")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("Player 2 (black), choose a column (from the numbers 1-7),")
+				expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
+				expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    | #{BLACK}  |    |    |")
+				expect(STDOUT).to receive(:puts).with("")
+				@game.turn(@game.player2,"5")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("Player 1 (red), choose a column (from the numbers 1-7),")
+				expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
+				expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    | #{BLACK}  |    |    |")
+				expect(STDOUT).to receive(:puts).with("")
+				@game.turn(@game.player1,"3")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("Player 2 (black), choose a column (from the numbers 1-7),")
+				expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
+				expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{BLACK}  |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    | #{BLACK}  |    |    |")
+				expect(STDOUT).to receive(:puts).with("")
+				@game.turn(@game.player2,"3")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("Player 1 (red), choose a column (from the numbers 1-7),")
+				expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
+				expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{BLACK}  |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  | #{RED}  | #{BLACK}  |    |    |")
+				expect(STDOUT).to receive(:puts).with("")
+				@game.turn(@game.player1,"4")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("Player 2 (black), choose a column (from the numbers 1-7),")
+				expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
+				expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{BLACK}  |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  | #{BLACK}  |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  | #{RED}  | #{BLACK}  |    |    |")
+				expect(STDOUT).to receive(:puts).with("")
+				@game.turn(@game.player2,"4")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("Player 1 (red), choose a column (from the numbers 1-7),")
+				expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
+				expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{BLACK}  |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{RED}  | #{BLACK}  |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    | #{RED}  | #{RED}  | #{RED}  | #{BLACK}  |    |    |")
+				expect(STDOUT).to receive(:puts).with("")
+				@game.turn(@game.player1,"2")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("Player 2 (black), choose a column (from the numbers 1-7),")
+				expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
+				expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{BLACK}  |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    | #{BLACK}  | #{RED}  | #{BLACK}  |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    | #{RED}  | #{RED}  | #{RED}  | #{BLACK}  |    |    |")
+				expect(STDOUT).to receive(:puts).with("")
+				@game.turn(@game.player2,"2")
+			end
+
+			it "returns true and #turn gives a message announcing the player has won" do
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("Player 1 (red), choose a column (from the numbers 1-7),")
+				expect(STDOUT).to receive(:puts).with("or \"display\" the current cage, or ask")
+				expect(STDOUT).to receive(:puts).with("for \"help\", or \"exit\":")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("  1    2    3    4    5    6    7")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    |    |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    |    | #{BLACK}  |    |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("|    | #{BLACK}  | #{RED}  | #{BLACK}  |    |    |    |")
+				expect(STDOUT).to receive(:puts).with("| #{RED}  | #{RED}  | #{RED}  | #{RED}  | #{BLACK}  |    |    |")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("Four in a row! Player 1 wins!")
+				@game.turn(@game.player1,"1")
+				expect( @game.win?(@game.player1,[1,6]) ).to be_truthy
+			end
+
+		end
+
+	end
+
+	describe "#play_again" do
+
+		before do
+			expect(STDOUT).to receive(:puts).with("")
+			expect(STDOUT).to receive(:puts).with("Play again?")
+		end
+
+		context "when input is 'yes'" do
+			it "starts a new game of Connect Four" do
+				expect(STDOUT).to receive(:puts).with("")
+				new_game = @game.play_again("yes")
+				expect(new_game).to be_an_instance_of ConnectFour
+			end
+		end
+
+		context "when input is 'no'" do
+			it "starts a new game of Connect Four" do
+				expect(STDOUT).to receive(:puts).with("")
+				expect(STDOUT).to receive(:puts).with("Goodbye!")
+				@game.play_again("no")
+			end
+		end
+
+		context "when input is neither 'yes' nor 'no'" do
+			it "gives an error message" do
+				expect(STDOUT).to receive(:puts).with("Error: Invalid input. Try again...")
+				@game.play_again("maybe")
+			end
 		end
 
 	end

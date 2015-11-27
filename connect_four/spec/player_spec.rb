@@ -28,4 +28,27 @@ describe Player do
 
 	end
 
+	describe "#pieces" do
+
+		context "when Player object is initialized" do
+			it "returns an empty array" do
+				expect(@player.pieces).to eql []
+			end
+		end
+
+		context "when coordinate arrays are pushed to #pieces" do
+
+			before do
+				@player.pieces << [3,6]
+				@player.pieces << [3,5]
+				@player.pieces << [4,6]
+			end
+
+			it "returns an array with all coordinates pushed" do
+				expect(@player.pieces).to eql [[3,6],[3,5],[4,6]]
+			end
+		end
+
+	end
+
 end
